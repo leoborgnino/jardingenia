@@ -1,2 +1,2 @@
 # jardingenia
-Repo del proyecto de Jardín Auntomatizado
+Repo del proyecto de Jardín Automatizado

@@ -20,7 +20,7 @@ void Planta::begin(){
 }
 
 float Planta::cheqHumS(){
-  return analogRead(15)/7;
+  return analogRead(PinsHums)/7;
 }
 
 float Planta::cheqHum(){
