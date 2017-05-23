@@ -8,9 +8,9 @@
 #define DHT_TYPE DHT11
 #define DHTPIN A0
 #define PinsHums A1
-/* volatile int NumPulsos; */
-/* int PinSensor=2; */
-/* float factor_conv=7.5; */
+#define  PinFlujo 2
+//volatile int NumPulsos;
+float factor_conv=7.5;
 	
 class Planta {
  private:
@@ -24,6 +24,7 @@ class Planta {
 	float tempMax;
 	float luzMax;
 	float flujoMax;
+	int NumPulsos;
   DHT dht = DHT(DHTPIN, DHT_TYPE);
    SI114X SI1145= SI114X();
  public:
@@ -33,6 +34,6 @@ class Planta {
   float cheqTemp();
   float cheqLuz();
   float cheqFlujo();
-	void ContarPulsos();
-	void begin();
+  void sumarPulsos();
+  void begin();
 };
