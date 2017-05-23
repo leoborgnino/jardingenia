@@ -3,8 +3,8 @@
 LiceNcIADo por FuLGor y TARpuY
 No aL cOPyriGht
 */
+#define PinsHums A1
 
-// #include "Planta.h"
 Planta::Planta(float maxHumS, float maxHum, float maxTemp, float maxLuz, float maxFlujo){
   humSMax= maxHumS;
   humMax= maxHum;
@@ -14,7 +14,9 @@ Planta::Planta(float maxHumS, float maxHum, float maxTemp, float maxLuz, float m
 }
 void Planta::begin(){
   dht.begin();
-  // SI1145.Begin();
+  while (!SI1145.Begin())
+    delay (1000);
+  
   // pinMode(PinSensor, INPUT);
   // attachInterrupt(0,ContarPulsos,RISING);
 }
@@ -31,9 +33,10 @@ float Planta::cheqTemp(){
   return dht.readTemperature();
 }
 
-// float Planta::cheqLuz(){
-//   return (float)SI1145.ReadVisible();
-// }
+float Planta::cheqLuz(){
+  float UVIndex =(float)SI1145.ReadIR ();
+  return UVIndex;
+}
 
 float Planta::cheqFlujo(){
   int frecuencia;

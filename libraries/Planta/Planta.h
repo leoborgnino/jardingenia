@@ -1,8 +1,9 @@
-#include <Wire.h>
-#include "/home/leo/Documentos/jardingenia/libraries/DHT/DHT.h"
-#include "/home/leo/Documentos/jardingenia/libraries/DHT/DHT.cpp"
-/* #include "/home/leo/Documentos/jardingenia/libraries/SI114X/SI114X.h" */
+#include "/home/ingenia/jardingenia/libraries/DHT/DHT.h"
+#include "/home/ingenia/jardingenia/libraries/DHT/DHT.cpp"
+#include "/home/ingenia/jardingenia/libraries/SI114X/SI114X.h"
+#include "/home/ingenia/jardingenia/libraries/SI114X/SI114X.cpp"
 #include <Arduino.h>
+#include <Wire.h>
 
 #define DHT_TYPE DHT11
 #define DHTPIN A0
@@ -24,7 +25,7 @@ class Planta {
 	float luzMax;
 	float flujoMax;
   DHT dht = DHT(DHTPIN, DHT_TYPE);
-	/* SI114X SI1145= SI114X(); */
+   SI114X SI1145= SI114X();
  public:
   Planta(float maxHumS, float maxHum, float maxTemp, float maxLuz, float maxFlujo);
   float cheqHumS();
