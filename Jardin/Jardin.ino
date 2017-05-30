@@ -1,3 +1,4 @@
+
 /********************************
  *        Includes              *
 /********************************/
@@ -5,6 +6,11 @@
 #include <TimerOne.h>
 #include <Wire.h>
 #include <SeeedOLED.h>
+#include "/home/ingenia/jardingenia/libraries/Planta/Planta.h"
+#include "/home/ingenia/jardingenia/libraries/Planta/Planta.cpp"
+#include "/home/ingenia/jardingenia/libraries/SI114X/SI114X.h"
+#include "/home/ingenia/jardingenia/libraries/DHT/DHT.h"
+#include "Arduino.h"
 
 /********************************
  *        Constantes            *
@@ -16,6 +22,7 @@ const long BAUD_RATE = 9600;
 const int INTE0 = 2;
 const int LIMITE = 6;
 const int TIME_SAMPLE = 5;
+
 /********************************
  *    Variables Globales        *
 /********************************/
@@ -47,6 +54,9 @@ void imprimirEnPantalla();
  * @brief Inicializacion de variables, interrupciones, comunicacion serie.
  * @param None
  */
+
+
+Planta planta(1,1,1,1,1);
 void setup()
 {
 
@@ -62,44 +72,7 @@ void setup()
   SeeedOled.clearDisplay();           //clear the screen and set start position to top left corner
   SeeedOled.setNormalDisplay();       //Set display to Normal mode
   SeeedOled.setPageMode();            //Set addressing mode to Page Mode
-  for(i=1; i<=LIMITE; i++){
-  SeeedOled.setTextXY(i,0); //Set the cursor to 3rd Page, 0th Column  
-  switch (i)
-  {
-    case 1:
-  SeeedOled.putString("Temp:"); //SeeedOled.putString("Temp:"+ metodoget de planta +" °C");
-  SeeedOled.putNumber(34);
-  SeeedOled.putString("C");
-  break;
 
-   case 2:
-   
-  SeeedOled.setPageMode(); 
-  SeeedOled.putString("HumS:");
-  SeeedOled.putNumber(20);
-  SeeedOled.putString("%");
-  break;
-
-  case 3:
-  
-  SeeedOled.putString("HumA:");
-  SeeedOled.putNumber(30);
-  SeeedOled.putString("%");
-  break;
-
-  case 4:
-  SeeedOled.putString("Luz:");
-  SeeedOled.putNumber(15);
-  SeeedOled.putString(" lumen");
-  break;
-
-  case 5:
-  SeeedOled.putString("Flujo:");
-  SeeedOled.putNumber(12);
-  SeeedOled.putString("%");
-  break;
-  }
-  }
 }
 
 /**                                                                                                                                                                  
@@ -110,7 +83,47 @@ void setup()
 void loop()
 {
   Serial.begin(9600);
+  planta.begin();
+    for(int i=1; i<=LIMITE; i++){
+  SeeedOled.setTextXY(i,0); //Set the cursor to 3rd Page, 0th Column  
+  switch (i)
+  {
+    case 1:
+  SeeedOled.putString("Temp:"); //SeeedOled.putString("Temp:"+ metodoget de planta +" °C");
+  SeeedOled.putFloat(planta.cheqTemp());
+  SeeedOled.putString("C");
+  break;
 
+   case 2:
+   
+  SeeedOled.setPageMode(); 
+  SeeedOled.putString("HumS:");
+  SeeedOled.putFloat(planta.cheqHumS());
+  SeeedOled.putString("%");
+  break;
+
+  case 3:
+  
+  SeeedOled.putString("HumA:");
+  SeeedOled.putFloat(planta.cheqHum());
+  SeeedOled.putString("%");
+  break;
+
+  case 4:
+  SeeedOled.putString("Luz:");
+  SeeedOled.putFloat(planta.cheqLuz());
+  SeeedOled.putString(" lumen");
+  break;
+
+ /* case 5:
+  SeeedOled.putString("Flujo:");
+  SeeedOled.putFloat(planta.cheqFlujo());
+  SeeedOled.putString("%");
+  break;*/
+  }
+  }
+ delay (1000);
+SeeedOled.clearDisplay();
 }
 
 void ISR_INTE0() //PIN2 Encoder
