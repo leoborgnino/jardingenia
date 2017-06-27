@@ -1,8 +1,4 @@
 
-/********************************
- *        Includes              *
-/********************************/
-
 #include <TimerOne.h>
 #include <Wire.h>
 #include <SeeedOLED.h>
@@ -22,6 +18,9 @@ const long BAUD_RATE = 9600;
 const int INTE0 = 2;
 const int LIMITE = 6;
 const int TIME_SAMPLE = 5;
+const double MAXHUM = 80;
+const double MINHUM = 20;
+#define Relay 6
 
 /********************************
  *    Variables Globales        *
@@ -30,7 +29,7 @@ const int TIME_SAMPLE = 5;
 // Banderas
 
 boolean flag_water = false;
-
+boolean flag_screen_update = false;
 // Clases
 //
 
@@ -59,20 +58,24 @@ void imprimirEnPantalla();
 Planta planta(1,1,1,1,1);
 void setup()
 {
-
+  
+ planta.begin();
+ Serial.println("INICIO");
   int i;
-  Wire.begin();  
-  SeeedOled.init();  //initialze SEEED OLED display
-  
-  Timer1.initialize(double(TIME_SAMPLE*1000.0)); // WARNING: Depende de la versión del compilador  // Dispara cada TIME_SAMPLE ms
-  Timer1.attachInterrupt(ISR_Timer);     // Activa la interrupcion y la asocia a ISR_Blink
-  
-  Serial.begin(BAUD_RATE);               // Inicio la transmision serie
-  attachInterrupt(digitalPinToInterrupt(INTE0), ISR_INTE0,    RISING); // Interrupcion externa en pin 2 por cambio de nivel
-  SeeedOled.clearDisplay();           //clear the screen and set start position to top left corner
-  SeeedOled.setNormalDisplay();       //Set display to Normal mode
-  SeeedOled.setPageMode();            //Set addressing mode to Page Mode
+ Wire.begin();  
+ SeeedOled.init();  //initialze SEEED OLED display
 
+ Timer1.initialize(double(1000*1000.0)); // WARNING: Depende de la versión del compilador  // Dispara cada TIME_SAMPLE ms
+ Timer1.attachInterrupt(ISR_Timer);     // Activa la interrupcion y la asocia a ISR_Blink
+  
+ Serial.begin(BAUD_RATE);               // Inicio la transmision serie
+ attachInterrupt(digitalPinToInterrupt(INTE0), ISR_INTE0,    RISING); // Interrupcion externa en pin 2 por cambio de nivel
+ SeeedOled.clearDisplay();           //clear the screen and set start position to top left corner
+ SeeedOled.setNormalDisplay();       //Set display to Normal mode
+ SeeedOled.setPageMode();            //Set addressing mode to Page Mode
+
+pinMode(Relay, OUTPUT);
+    
 }
 
 /**                                                                                                                                                                  
@@ -82,21 +85,32 @@ void setup()
  */
 void loop()
 {
-  Serial.begin(9600);
-  planta.begin();
+  if (flag_screen_update == true)
+  {
+  imprimirEnPantalla();
+  flag_screen_update = false;
+  }
+
+}
+
+void ISR_INTE0() //PIN2 Encoder
+{
+
+}
+
+void imprimirEnPantalla(){
     for(int i=1; i<=LIMITE; i++){
   SeeedOled.setTextXY(i,0); //Set the cursor to 3rd Page, 0th Column  
   switch (i)
   {
     case 1:
-  SeeedOled.putString("Temp:"); //SeeedOled.putString("Temp:"+ metodoget de planta +" °C");
+  SeeedOled.setPageMode(); 
+  SeeedOled.putString("Temp:"); 
   SeeedOled.putFloat(planta.cheqTemp());
   SeeedOled.putString("C");
   break;
 
    case 2:
-   
-  SeeedOled.setPageMode(); 
   SeeedOled.putString("HumS:");
   SeeedOled.putFloat(planta.cheqHumS());
   SeeedOled.putString("%");
@@ -122,25 +136,18 @@ void loop()
   break;*/
   }
   }
- delay (1000);
-SeeedOled.clearDisplay();
 }
-
-void ISR_INTE0() //PIN2 Encoder
-{
-
-}
-
-void imprimirEnPantalla(){
-
-}
-
+//
 void ISR_Timer ()
 {
-  
+  flag_screen_update = true;
+  if(planta.cheqHumS()<MINHUM)
+  {
+    digitalWrite(Relay, HIGH);
   }
-
-
-
-
+ else if(planta.cheqHumS()>MAXHUM)
+  {
+    digitalWrite(Relay, LOW);
+  }
+}
 

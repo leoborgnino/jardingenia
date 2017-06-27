@@ -19,7 +19,6 @@ void Planta::begin(){
     delay (1000);
   
   pinMode(PinFlujo, INPUT);
-  //attachInterrupt(0,ContarPulsos,RISING);
 }
 
 float Planta::cheqHumS(){
@@ -40,13 +39,13 @@ float Planta::cheqLuz(){
 }
 
 float Planta::cheqFlujo(){
-  int frecuencia;
-  NumPulsos=0;
-  interrupts();
-  delay(1000);
-  noInterrupts();
-  frecuencia= NumPulsos;
-  frecuencia= frecuencia/factor_conv;
+    int frecuencia;
+  //  NumPulsos=0;
+  //  interrupts();
+  // delay(1000);
+  //  noInterrupts();
+  //  frecuencia= NumPulsos;
+  // frecuencia= frecuencia/factor_conv;
   return frecuencia;
 }
  void Planta::sumarPulsos(){
