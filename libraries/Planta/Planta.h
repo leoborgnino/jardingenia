@@ -9,7 +9,7 @@
 #define DHTPIN A0
 #define PinsHums A1
 #define  PinFlujo 2
-//volatile int NumPulsos;
+volatile int NumPulsos;
 float factor_conv=7.5;
 	
 class Planta {
@@ -33,7 +33,6 @@ class Planta {
   float cheqHum();
   float cheqTemp();
   float cheqLuz();
-  float cheqFlujo();
-  void sumarPulsos();
+  int cheqFlujo();
   void begin();
 };

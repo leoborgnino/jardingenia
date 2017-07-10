@@ -19,7 +19,10 @@ const int INTE0 = 2;
 const int LIMITE = 6;
 const int TIME_SAMPLE = 5;
 const double MAXHUM = 80;
-const double MINHUM = 20;
+const double MINHUM = 5;
+int flag_start_flow=0;
+float caudal_Lm=0;
+int contador =0;
 #define Relay 6
 
 /********************************
@@ -58,18 +61,16 @@ void imprimirEnPantalla();
 Planta planta(1,1,1,1,1);
 void setup()
 {
-  
+   Serial.begin(BAUD_RATE); 
+  Serial.println("INICIO");
  planta.begin();
- Serial.println("INICIO");
   int i;
  Wire.begin();  
  SeeedOled.init();  //initialze SEEED OLED display
 
  Timer1.initialize(double(1000*1000.0)); // WARNING: Depende de la versión del compilador  // Dispara cada TIME_SAMPLE ms
  Timer1.attachInterrupt(ISR_Timer);     // Activa la interrupcion y la asocia a ISR_Blink
-  
- Serial.begin(BAUD_RATE);               // Inicio la transmision serie
- attachInterrupt(digitalPinToInterrupt(INTE0), ISR_INTE0,    RISING); // Interrupcion externa en pin 2 por cambio de nivel
+ attachInterrupt(digitalPinToInterrupt(INTE0), sumarPulsos,    RISING); // Interrupcion externa en pin 2 por cambio de nivel
  SeeedOled.clearDisplay();           //clear the screen and set start position to top left corner
  SeeedOled.setNormalDisplay();       //Set display to Normal mode
  SeeedOled.setPageMode();            //Set addressing mode to Page Mode
@@ -90,7 +91,13 @@ void loop()
   imprimirEnPantalla();
   flag_screen_update = false;
   }
-
+  if (flag_start_flow==3){
+    Serial.print(caudal_Lm);
+    SeeedOled.putString("Flujo:");
+    SeeedOled.putFloat(caudal_Lm);
+    SeeedOled.putString("L/m");
+    flag_start_flow=0;
+  }
 }
 
 void ISR_INTE0() //PIN2 Encoder
@@ -128,26 +135,41 @@ void imprimirEnPantalla(){
   SeeedOled.putFloat(planta.cheqLuz());
   SeeedOled.putString(" lumen");
   break;
-
- /* case 5:
-  SeeedOled.putString("Flujo:");
-  SeeedOled.putFloat(planta.cheqFlujo());
-  SeeedOled.putString("%");
-  break;*/
+  
+  case 5:
+  flag_start_flow=planta.cheqFlujo();
+  break;
   }
   }
 }
 //
 void ISR_Timer ()
 {
-  flag_screen_update = true;
-  if(planta.cheqHumS()<MINHUM)
+  if (flag_start_flow == 2){
+    caudal_Lm= (NumPulsos*4)/factor_conv;
+    flag_start_flow = 3;
+    Serial.println("estado 2");
+  }
+  else if (flag_start_flow == 1){
+    NumPulsos=0;
+    flag_start_flow++;
+    Serial.println("estado 1");
+  }
+  if((contador%4) == 0){
+    flag_screen_update = true;
+  }
+  if(planta.cheqHumS()>MINHUM)
   {
     digitalWrite(Relay, HIGH);
   }
- else if(planta.cheqHumS()>MAXHUM)
+ else if(planta.cheqHumS()<MAXHUM)
   {
     digitalWrite(Relay, LOW);
   }
+  contador++;
+}
+
+void sumarPulsos(){
+   NumPulsos++;
 }
 
