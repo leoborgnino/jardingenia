@@ -1,7 +1,7 @@
-#include "/home/ingenia/jardingenia/libraries/DHT/DHT.h"
-#include "/home/ingenia/jardingenia/libraries/DHT/DHT.cpp"
-#include "/home/ingenia/jardingenia/libraries/SI114X/SI114X.h"
-#include "/home/ingenia/jardingenia/libraries/SI114X/SI114X.cpp"
+#include "/home/leo/jardingenia/libraries/DHT/DHT.h"
+#include "/home/leo/jardingenia/libraries/DHT/DHT.cpp"
+#include "/home/leo/jardingenia/libraries/SI114X/SI114X.h"
+#include "/home/leo/jardingenia/libraries/SI114X/SI114X.cpp"
 #include <Arduino.h>
 #include <Wire.h>
 

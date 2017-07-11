@@ -7,7 +7,11 @@ class jardin(Obj_Head):
         def __init__(self,com):
                 Obj_Head.__init__(self,com,self.save)
                 self.temperatura    = 0
-                self.humedad        = 0
+                self.humedad_suelo  = 0
+                self.humedad_ambiente  = 0
+                self.luz  = 0
+                self.caudal  = 0
+                self.bomba_activa  = 0
                 self.__flag_datos  = 0
                 self.__arreglo_datos = []
 
@@ -34,5 +38,10 @@ class jardin(Obj_Head):
                         pass
                 self.__flag_datos = 0
                 self.temperatura = self.__arreglo_datos[0]
-                self.humedad = self.__arreglo_datos[1]
+                self.humedad_suelo = self.__arreglo_datos[1]
+                self.humedad_ambiente = self.__arreglo_datos[2]
+                self.luz = self.__arreglo_datos[3]
+                self.caudal = self.__arreglo_datos[4]
+                self.bomba_activa = self.__arreglo_datos[5]
+                print self.__arreglo_datos
                 return self.__arreglo_datos

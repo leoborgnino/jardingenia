@@ -13,6 +13,7 @@ import time
 import threading
 import ThreadHandler
 import graphic
+import Jardin
 import sys
 
 BAUD_RATE = 9600
@@ -40,5 +41,5 @@ hilo_recepcion = ThreadHandler.ThreadHandler(com.receive, "Hilo de recepcion")
 hilo_envio = ThreadHandler.ThreadHandler(com.send, "Hilo de envio")
 hilo_grafico = ThreadHandler.ThreadHandler(grafico.run, "Hilo Grafico")
 open_threads()
-time.sleep(50)
+time.sleep(30)
 close_threads()
