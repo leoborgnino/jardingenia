@@ -1,7 +1,11 @@
+/* La ClAsee de la PlAANta wacHO
+
+LiceNcIADo por FuLGor y TARpuY
+No aL cOPyriGht
+*/
 #define PinsHums A1
-Planta::Planta(float minHumS, float maxHumS, float maxHum, float maxTemp, float maxLuz, float maxFlujo){
+Planta::Planta(float maxHumS, float maxHum, float maxTemp, float maxLuz, float maxFlujo){
   humSMax= maxHumS;
-  humSMin= minHumS;
   humMax= maxHum;
   tempMax= maxTemp;
   luzMax= maxLuz;

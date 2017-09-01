@@ -13,14 +13,13 @@ volatile int NumPulsos;
 float factor_conv=7.5;
 	
 class Planta {
- public:
+ private:
   float Humsuelo;
   float Humedad;
   float Temperatura;
   float luz;
   float flujo;
 	float humSMax;
-	float humSMin;
 	float humMax;
 	float tempMax;
 	float luzMax;
@@ -29,7 +28,7 @@ class Planta {
   DHT dht = DHT(DHTPIN, DHT_TYPE);
    SI114X SI1145= SI114X();
  public:
-   Planta(float minHumS, float maxHumS, float maxHum, float maxTemp, float maxLuz, float maxFlujo);
+  Planta(float maxHumS, float maxHum, float maxTemp, float maxLuz, float maxFlujo);
   float cheqHumS();
   float cheqHum();
   float cheqTemp();

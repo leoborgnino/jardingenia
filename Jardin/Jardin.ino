@@ -2,10 +2,14 @@
 #include <TimerOne.h>
 #include <Wire.h>
 #include <SeeedOLED.h>
-#include "/home/ingenia/jardingenia/libraries/Planta/Planta.h"
-#include "/home/ingenia/jardingenia/libraries/Planta/Planta.cpp"
-#include "/home/ingenia/jardingenia/libraries/SI114X/SI114X.h"
-#include "/home/ingenia/jardingenia/libraries/DHT/DHT.h"
+#include "D:\jarga\Documents\GitHub\jardingenia\libraries\Planta\Planta.h"
+#include "D:\jarga\Documents\GitHub\jardingenia\libraries\Planta\Planta.cpp"
+#include "D:\jarga\Documents\GitHub\jardingenia\libraries\DHT\DHT.h"
+#include "D:\jarga\Documents\GitHub\jardingenia\libraries\SI114X\SI114X.h"
+//#include "/home/ingenia/jardingenia/libraries/Planta/Planta.h"
+//#include "/home/ingenia/jardingenia/libraries/Planta/Planta.cpp"
+//#include "/home/ingenia/jardingenia/libraries/SI114X/SI114X.h"
+//#include "/home/ingenia/jardingenia/libraries/DHT/DHT.h"
 #include "Arduino.h"
 
 /********************************
@@ -18,8 +22,8 @@ const long BAUD_RATE = 9600;
 const int INTE0 = 2;
 const int LIMITE = 6;
 const int TIME_SAMPLE = 5;
-const double MAXHUM = 80;
-const double MINHUM = 5;
+const double NREGAR = 65;
+const double REGAR_INF = 40;
 int flag_start_flow=0;
 float caudal_Lm=0;
 int contador =0;
@@ -58,7 +62,7 @@ void imprimirEnPantalla();
  */
 
 
-Planta planta(1,1,1,1,1);
+Planta planta(40,65,1,1,1,1);
 void setup()
 {
    Serial.begin(BAUD_RATE); 
@@ -158,11 +162,11 @@ void ISR_Timer ()
   if((contador%4) == 0){
     flag_screen_update = true;
   }
-  if(planta.cheqHumS()>MINHUM)
+  if(planta.cheqHumS()< planta.humSMin)
   {
     digitalWrite(Relay, HIGH);
   }
- else if(planta.cheqHumS()<MAXHUM)
+ else if(planta.cheqHumS()> planta.humSMax)
   {
     digitalWrite(Relay, LOW);
   }
