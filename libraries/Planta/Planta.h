@@ -1,7 +1,11 @@
-#include "D:\jarga\Documents\GitHub\jardingenia\libraries\DHT\DHT.h"
-#include "D:\jarga\Documents\GitHub\jardingenia\libraries\DHT\DHT.cpp"
-#include "D:\jarga\Documents\GitHub\jardingenia\libraries\SI114X\SI114X.h"
-#include "D:\jarga\Documents\GitHub\jardingenia\libraries\SI114X\SI114X.cpp"
+//#include "D:\jarga\Documents\GitHub\jardingenia\libraries\DHT\DHT.h"
+//#include "D:\jarga\Documents\GitHub\jardingenia\libraries\DHT\DHT.cpp"
+//#include "D:\jarga\Documents\GitHub\jardingenia\libraries\SI114X\SI114X.h"
+//#include "D:\jarga\Documents\GitHub\jardingenia\libraries\SI114X\SI114X.cpp"
+#include "/home/leo/Documentos/jardingenia/libraries/DHT/DHT.h"
+#include "/home/leo/Documentos/jardingenia/libraries/DHT/DHT.cpp"
+#include "/home/leo/Documentos/jardingenia/libraries/SI114X/SI114X.h"
+#include "/home/leo/Documentos/jardingenia/libraries/SI114X/SI114X.cpp"
 #include <Arduino.h>
 #include <Wire.h>
 
