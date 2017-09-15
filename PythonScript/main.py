@@ -24,8 +24,8 @@ def open_threads():
     time.sleep(0.05)
     hilo_envio.start()
     time.sleep(0.05)
-    hilo_grafico.start()
-    time.sleep(0.05)
+#    hilo_grafico.start()
+#    time.sleep(0.05)
     hilo_Logue.start()
     time.sleep(0.05)   
 
@@ -34,8 +34,8 @@ def close_threads():
     time.sleep(0.05)
     hilo_envio.stop_thread()
     time.sleep(0.05)
-    hilo_grafico.stop_thread()
-    time.sleep(0.05)
+#    hilo_grafico.stop_thread()
+#    time.sleep(0.05)
     hilo_Logue.stop_thread()
     time.sleep(0.05)
 
@@ -48,7 +48,5 @@ hilo_envio = ThreadHandler.ThreadHandler(com.send, "Hilo de envio")
 hilo_grafico = ThreadHandler.ThreadHandler(grafico.run, "Hilo Grafico")
 hilo_Logue = ThreadHandler.ThreadHandler(Logue.run, "Hilo Datos")
 open_threads()
-# time.sleep(60)
-while True:
-    pass
+time.sleep(60)
 close_threads()

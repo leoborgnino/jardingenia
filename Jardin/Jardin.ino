@@ -10,10 +10,10 @@
 //#include "/home/ingenia/jardingenia/libraries/Planta/Planta.cpp"
 //#include "/home/ingenia/jardingenia/libraries/SI114X/SI114X.h"
 //#include "/home/ingenia/jardingenia/libraries/DHT/DHT.h"
-#include "/home/leo/Documentos/jardingenia/libraries/Planta/Planta.h"
-#include "/home/leo/Documentos/jardingenia/libraries/Planta/Planta.cpp"
-#include "/home/leo/Documentos/jardingenia/libraries/SI114X/SI114X.h"
-#include "/home/leo/Documentos/jardingenia/libraries/DHT/DHT.h"
+#include "/home/ingenia/Documentos/jardingenia/libraries/Planta/Planta.h"
+#include "/home/ingenia/Documentos/jardingenia/libraries/Planta/Planta.cpp"
+#include "/home/ingenia/Documentos/jardingenia/libraries/SI114X/SI114X.h"
+#include "/home/ingenia/Documentos/jardingenia/libraries/DHT/DHT.h"
 #include "Arduino.h"
 
 /********************************
@@ -44,6 +44,7 @@ float caudal_Lm     = 0.;
 
 boolean flag_water         = false;
 boolean flag_screen_update = false;
+boolean flag_bomba_activada = false;
 
 // Variables Comunicación PC
 
@@ -160,15 +161,15 @@ void loop()
   if ((data_rec[1] == 'g') && (flag_accion))
   {
     respuestaid_datos = data_rec[0];
-    //obtener_datos(datos);
+    obtener_datos(datos);
 
-    //for(int i=0;i<6;i++)
-    //{
-    //  dtostrf(datos[i],6,2,buff[i]);
-    //}
+    for(int i=0;i<6;i++)
+    {
+      dtostrf(datos[i],6,2,buff[i]);
+    }
 
-   //sprintf(mystring, "%s %s %s %s %s %s !", buff[0], buff[1], buff[2], buff[3], buff[4], buff[5]);
-   sprintf(mystring, "1 2 3 4 5 6 !");
+   sprintf(mystring, "%s %s %s %s %s %s !", buff[0], buff[1], buff[2], buff[3], buff[4], buff[5]);
+   //sprintf(mystring, "1 2 3 4 5 6 !");
    send_uart(mystring, respuestaid_datos);
    flag_accion = false;
   }
@@ -244,9 +245,15 @@ void ISR_Timer ()
     flag_screen_update = true;
   
   if(planta.cheqHumS()< planta.humSMin)
+  {
     digitalWrite(Relay, HIGH);
+    flag_bomba_activada = true;
+  }
   else if(planta.cheqHumS()> planta.humSMax)
+  {
     digitalWrite(Relay, LOW);
+  flag_bomba_activada = false;
+  }
   
   contador++;
 }
@@ -345,12 +352,12 @@ void receive_uart()
 void obtener_datos (float *datos)
 {
 
-  //datos[0] = planta.cheqTemp();
-  //datos[1] = planta.cheqHumS();
-  //datos[2] = planta.cheqHum();
-  //datos[3] = planta.cheqLuz();
-  //datos[4] = caudal_Lm;
-  //datos[5] = flag_bomba_activada;
+  datos[0] = planta.cheqTemp();
+  datos[1] = planta.cheqHumS();
+  datos[2] = planta.cheqHum();
+  datos[3] = planta.cheqLuz();
+  datos[4] = caudal_Lm;
+  datos[5] = flag_bomba_activada;
 
 }
 
